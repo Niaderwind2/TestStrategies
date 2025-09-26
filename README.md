@@ -8,7 +8,6 @@ Ce TP vous permettra de maîtriser les différentes stratégies de tests dans un
 - **TDD (Test-Driven Development)**
 - **BDD (Behavior-Driven Development)** avec SpecFlow
 
-**Durée estimée :** 2h30
 **Prérequis :** Connaissance de base de C# et .NET
 
 ## 🎯 Objectifs d'apprentissage
@@ -49,7 +48,7 @@ TestStrategies/
         └── AccountManagementSteps.cs
 ```
 
-## 📚 Partie 1 : Tests Unitaires (30 minutes)
+## 📚 Partie 1 : Tests Unitaires
 
 ### 🎯 Objectif
 Compléter les tests unitaires dans `UnitTest1.cs` pour les classes `Account` et `AccountService`.
@@ -91,7 +90,7 @@ dotnet test --logger:detailed
 
 ---
 
-## 🌐 Partie 2 : Tests d'Intégration (20 minutes)
+## 🌐 Partie 2 : Tests d'Intégration
 
 ### 🎯 Objectif
 Implémenter les tests d'intégration dans `IntegrationTests.cs` pour tester l'API HTTP complète.
@@ -121,7 +120,7 @@ Implémenter les tests d'intégration dans `IntegrationTests.cs` pour tester l'A
 
 ---
 
-## 🔴🟢🔵 Partie 3 : Exercice TDD (45 minutes)
+## 🔴🟢🔵 Partie 3 : Exercice TDD
 
 ### 🎯 Objectif
 Développer une nouvelle fonctionnalité "Transfert entre comptes" en suivant la méthodologie TDD.
@@ -134,7 +133,7 @@ Développer une nouvelle fonctionnalité "Transfert entre comptes" en suivant la
 
 ### 📋 Étapes détaillées
 
-#### ÉTAPE 1 : Test basique (10 min)
+#### ÉTAPE 1 : Test basique 
 1. Ouvrez `TDD_Exercise.cs`
 2. Implémentez `Transfer_ValidAmountBetweenAccounts_ShouldTransferMoney()`
 3. ▶️ Lancez le test → Il doit échouer (RED)
@@ -142,17 +141,17 @@ Développer une nouvelle fonctionnalité "Transfert entre comptes" en suivant la
 5. ▶️ Le test doit passer (GREEN)
 6. Refactorisez si nécessaire (REFACTOR)
 
-#### ÉTAPE 2 : Validation des paramètres (15 min)
+#### ÉTAPE 2 : Validation des paramètres 
 - [ ] `Transfer_FromNonExistentAccount_ShouldThrowException`
 - [ ] `Transfer_ToNonExistentAccount_ShouldThrowException`
 - [ ] `Transfer_NegativeAmount_ShouldThrowException`
 - [ ] `Transfer_ZeroAmount_ShouldThrowException`
 
-#### ÉTAPE 3 : Gestion des fonds insuffisants (10 min)
+#### ÉTAPE 3 : Gestion des fonds insuffisants 
 - [ ] `Transfer_InsufficientFunds_ShouldThrowException`
 - [ ] `Transfer_ExactBalance_ShouldTransferSuccessfully`
 
-#### ÉTAPE 4 : Cas particuliers (10 min)
+#### ÉTAPE 4 : Cas particuliers 
 - [ ] `Transfer_SameAccount_ShouldThrowException`
 - [ ] `Transfer_MultipleTransfers_ShouldMaintainCorrectBalances`
 
@@ -166,19 +165,19 @@ public void Transfer(Guid fromAccountId, Guid toAccountId, decimal amount)
 
 ---
 
-## 🥒 Partie 4 : BDD avec SpecFlow (30 minutes)
+## 🥒 Partie 4 : BDD avec SpecFlow 
 
 ### 🎯 Objectif
 Compléter les scénarios BDD en langage naturel et leurs implémentations.
 
 ### 📝 Instructions
 
-#### Phase 1 : Compléter les Steps (15 min)
+#### Phase 1 : Compléter les Steps 
 1. Ouvrez `BDD_Features/AccountManagementSteps.cs`
 2. Complétez toutes les méthodes marquées `Assert.Fail("TODO...")`
 3. Implémentez les steps manquantes
 
-#### Phase 2 : Créer de nouveaux scénarios (15 min)
+#### Phase 2 : Créer de nouveaux scénarios 
 1. Ouvrez `BDD_Features/AccountManagement.feature`
 2. Complétez les scénarios marqués `@todo`
 3. Créez les steps correspondantes
