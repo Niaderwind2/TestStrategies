@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
+using System.Net;
 
 namespace TestStrategies.Tests
 {
@@ -33,7 +34,6 @@ namespace TestStrategies.Tests
 
             // Act
             // TODO: Effectuez un appel POST à /accounts avec le request
-            var response = await _client.PostAsJsonAsync("/accounts", request);
 
             // Assert
             // TODO: Vérifiez que le statut est Created (201)
@@ -133,6 +133,7 @@ namespace TestStrategies.Tests
             // 1. Créez un compte
             // 2. Effectuez un appel GET à /accounts/{id}/interest
             // 3. Vérifiez que le calcul d'intérêts est correct
+            // Note: L'API retourne { "Interest": 10.0 }, pas juste un decimal
             Assert.Fail("À implémenter complètement");
         }
 
@@ -159,4 +160,5 @@ namespace TestStrategies.Tests
     public record CreateAccountRequest(string Owner, decimal InitialDeposit = 0);
     public record DepositRequest(decimal Amount);
     public record WithdrawRequest(decimal Amount);
+    public record InterestResponse(decimal Interest);
 }

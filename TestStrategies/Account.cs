@@ -4,7 +4,7 @@ public class Account
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Owner { get; set; } = string.Empty;
-    public decimal Balance { get; private set; }
+    public decimal Balance { get; set; }
     public decimal InterestRate { get; set; } = 0.01m; // 1% par défaut
 
     public void Deposit(decimal amount)
