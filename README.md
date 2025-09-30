@@ -285,9 +285,105 @@ R: Oui, surtout pour l'exercice TDD où vous devez ajouter la méthode Transfer.
 
 Si vous terminez en avance :
 
-1. **Couverture de code** : Installez ReportGenerator et générez un rapport de couverture
-2. **Tests de performance** : Ajoutez des tests de charge avec NBomber
-3. **Mocking** : Utilisez Moq pour simuler des dépendances externes
+### 🔒 Tests de Sécurité
+1. **Validation des entrées** : 
+   - Tests d'injection SQL (même si on n'utilise pas de base de données)
+   - Validation des limites numériques (decimal overflow, montants négatifs)
+   - Tests de robustesse avec des chaînes vides, nulls, caractères spéciaux
+
+2. **Tests d'autorisation** :
+   - Vérification qu'on ne peut pas accéder aux comptes d'autres utilisateurs
+   - Tests avec des IDs invalides ou malformés
+   - Validation des montants (pas de montants astronomiques)
+
+3. **Tests de concurrence** :
+   - Plusieurs opérations simultanées sur le même compte
+   - Tests de race conditions avec `ConcurrentDictionary`
+
+**Exemple de test de sécurité :**
+```csharp
+[Test]
+public void CreateAccount_MaliciousInput_ShouldBeHandledSafely()
+{
+    // Test avec des caractères spéciaux, scripts, etc.
+    var maliciousInput = "<script>alert('xss')</script>";
+    
+    // Vérifier que l'input est échappé ou rejeté
+    var account = _accountService.CreateAccount(maliciousInput, 100m);
+    Assert.That(account.Owner, Does.Not.Contain("<script>"));
+}
+
+[Test]
+public void Deposit_ExtremelyLargeAmount_ShouldThrowException()
+{
+    var account = _accountService.CreateAccount("Test", 0);
+    
+    // Test avec des montants irréalistes
+    Assert.Throws<ArgumentException>(() => 
+        account.Deposit(decimal.MaxValue));
+}
+```
+
+### 🛡️ Tests de Non-Régression
+1. **Snapshot testing** :
+   - Sauvegarder l'état d'un compte après plusieurs opérations
+   - Comparer avec des résultats attendus sauvegardés
+
+2. **Tests de compatibilité** :
+   - Vérifier que les anciennes données restent compatibles
+   - Tests avec différentes versions de sérialisation JSON
+
+3. **Tests de performances** :
+   - Mesurer le temps d'exécution des opérations critiques
+   - Détecter les régressions de performance
+
+**Exemple de test de non-régression :**
+```csharp
+[Test]
+public void AccountOperations_ComplexScenario_ShouldMatchExpectedResult()
+{
+    // Scénario complexe reproductible
+    var account = _accountService.CreateAccount("Regression Test", 1000m);
+    
+    // Série d'opérations prédéfinies
+    account.Deposit(250m);
+    account.Withdraw(100m);
+    account.Deposit(50m);
+    
+    // Résultat attendu (sauvegardé lors du premier passage)
+    var expectedBalance = 1200m;
+    var expectedInterest = 12m; // 1% de 1200
+    
+    Assert.Multiple(() =>
+    {
+        Assert.That(account.Balance, Is.EqualTo(expectedBalance));
+        Assert.That(account.CalculateInterest(), Is.EqualTo(expectedInterest));
+    });
+}
+```
+
+### 📊 Autres Améliorations
+1. **Couverture de code** : Générez un rapport de couverture avec dotnet-coverage ou Coverlet
+2. **Tests de charge** : Utilisez NBomber ou similaire pour tester la performance
+3. **Mocking avancé** : Utilisez Moq ou NSubstitute pour simuler des services externes
 4. **Tests paramétrés** : Créez des tests avec `[TestCase]` pour tester plusieurs valeurs
+5. **Tests de mutation** : Utilisez Stryker.NET pour détecter les lacunes dans vos tests
+
+### 🎯 Suggestions d'implémentation par priorité
+
+**Priorité 1 - Tests de Sécurité Essentiels :**
+- Validation des entrées malveillantes
+- Tests de limites numériques
+- Vérification des autorisations d'accès
+
+**Priorité 2 - Tests de Non-Régression :**
+- Scénarios de workflow complets
+- Tests de compatibilité des données
+- Mesures de performance basiques
+
+**Priorité 3 - Tests Avancés :**
+- Tests de concurrence
+- Mutation testing
+- Tests de charge
 
 Bon travail ! 🚀
